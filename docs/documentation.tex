@@ -1,0 +1,70 @@
+\documentclass[a4paper,12p]{article}
+\usepackage{standalone}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{indentfirst}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\linespread{1.5}
+
+\renewcommand{\refname}{Źródła}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+\begin{document}
+
+\section{Model}
+
+\subsection{Wstęp}
+
+\textbf{XGBoost} jest skrótem od \textit{Extreme Gradient Boosting}. Metoda stanowi ulepszenie znanej metody \textbf{Gradient Boosting}. Należy do metod regresyjnych i wykorzystujących uczenie nadzorowane. Klasyfikatory otrzymywane przez metodę nazywane są zwykle \textbf{boosted trees}, funkcjonując również pod skrótem \textbf{GBM}.
+
+\subsection{Funkcja celu}
+
+Funkcja celu, podobnie jak w wielu innych metodach składa się z dwóch komponentów: funkcji straty $L$ oraz wyrażenia odpowiadającego za regularyzację $\Omega$ (ang. \textit{regularization term}). Jako funkcji straty możemy używać rozmaitych funkcji np. klasycznego błędu średniokwadratowego. $\Omega$ stanowi współczynnik, którego zadaniem jest niedopuszczenie do nadmiernego dopasowania (ang. \textit{overfitting}). Funkcja celu przedstawia się więc następująco:
+
+\begin{center}
+	$obj(\Theta)=L(\Theta)+\Omega(\Theta)$
+\end{center}
+
+\subsection{Model}
+
+Model składa się ze zbioru \textbf{drzew CART}. Najważniejszą cechą tych drzew, względem zwykłych drzew decyzyjnych jest przechowywanie liczbowego wyniku w liściach, przez co nie dostajemy jedynie prostej klasyfikacji, ale również wartość, którą można zmieniać. W związku z tym formułę dla modelu możemy zdefiniować następująco:
+
+\begin{center}
+	$y(x) = \sum_{j=1}{k} f_k{x}, f \in \mathbb{F},$
+\end{center}
+
+gdzie $\mathbb{F}$ jest zbiorem funkcji reprezentujących drzewa CART, a $x$ obiektem do klasyfikacji.
+
+\subsection{Trening}
+
+Trening modelu będzie polegał na trenowaniu funkcji $f_i$ reprezentujących kolejne drzewa, wchodzące w skład modelu. Model zwykle budowany jest przyrostowo, tzn. dla każdej iteracji dodajemy kolejne drzewo do modelu. Odpowiada to dodatkowej funkcji $f_i$ funkcji w formule $y$.
+
+Dla każdego kroku szukamy oczywiście drzewa (funkcji) minimalizującego funkcję straty. 
+
+\section{Technologia}
+
+Do wykonania pomiarów, związanych z projektem użyjemy biblioteki \texttt{xgboost} dla języka \texttt{Python}.
+
+\section{Parametry}
+
+\begin{center}
+
+\end{center}
+
+%\begin{center}
+%	\includegraphics[scale=0.5]{img1}
+%\end{center}
+
+
+
+\end{document}
