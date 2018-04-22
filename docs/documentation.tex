@@ -105,11 +105,14 @@ Implementacja w użytej bibliotece, obok drzew, pozwala również na użycie lin
 	\item \texttt{max\_depth} - maksymalna głębokość drzewa (jako najdłuższa ścieżka od rdzenia do liścia). Można też zastąpić \texttt{max\_leaf\_nodes} - maksymalną liczbą liści.
 	\item \texttt{eta} - \textit{learning rate}, intuicyjnie: opisuje jak szybko klasyfikator porzuca stare własności przy "nauczeniu się" nowych danych.
 	\item \texttt{alpha}, \texttt{lambda} - odpowiadają za różne typy regularyzacji, odpowiednio \textbf{L1} i \textbf{L2}. 
+	\item \texttt{gamma} - definiuje minimalną wartość zysku przy którym dochodzi do podziału węzła, zapewnia nam to że nie będzie za dużo podziału węzłów.
 \end{itemize}
 
 Wszystkie dostępne parametry są opisane w dokumentacji biblioteki \cite{github}.
 
 \section{Zbiory danych}
+Zbiór danych który będziemy wykorzystywać to \url{https://www.kaggle.com/c/forest-cover-type-prediction/data} zawarte są w nim dane i na ich podstawie będziemy oceniać jaki typ lasu rośnie na danym terenie.
+
 
 % do uzupełnienia
 
