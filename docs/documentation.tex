@@ -18,14 +18,36 @@
 
 \renewcommand{\refname}{Źródła}
 \newcommand\tab[1][1cm]{\hspace*{#1}}
+\setcounter{section}{-1}
 
 \begin{document}
+
+\thispagestyle{empty}
+	\begin{center}
+		{\scshape\Large Wydział Matematyki i Nauk Informacyjnych Politechniki Warszawskiej \par}
+		\vspace{3cm}
+		{\huge\bfseries WAE - specyfikacja wstępna\par}\
+		\vspace{1cm}
+		{\Large\scshape Optymalizacja parametrów XGBoost\par}
+		\vspace{3cm}
+		{\scshape Tomasz Laskowski\par}
+		{\scshape Michał Omelańczuk\par}
+		\vspace{8cm}
+		{\Large \today}
+		\vspace{1cm}
+	\end{center}
+	
+	\newpage
+
+\section{Cel projektu}
+
+Cel projektu jest użycie algorytmu optymalizacji do strojenia parametrów metody XGBoost oraz porównanie wyników z modelami z losowym przydziałem parametrów dla wybranych zadań klasyfikacji i regresji.
 
 \section{Model}
 
 \subsection{Wstęp}
 
-\textbf{XGBoost} jest skrótem od \textit{Extreme Gradient Boosting}. Metoda stanowi ulepszenie znanej metody \textbf{Gradient Boosting}. Należy do metod regresyjnych i wykorzystujących uczenie nadzorowane. Klasyfikatory otrzymywane przez metodę nazywane są zwykle \textbf{boosted trees}, funkcjonując również pod skrótem \textbf{GBM}.
+\textbf{XGBoost} jest skrótem od \textit{Extreme Gradient Boosting}. Metoda stanowi ulepszenie znanej metody \textbf{Gradient Boosting}. Wykorzystuje uczenie nadzorowane i jest stosowana do problemów regresyjnych i klasyfikacyjnych. Klasyfikatory otrzymywane przez metodę nazywane są zwykle \textbf{boosted trees}, funkcjonując również pod skrótem \textbf{GBM}.
 
 \subsection{Funkcja celu}
 
@@ -47,9 +69,29 @@ gdzie $\mathbb{F}$ jest zbiorem funkcji reprezentujących drzewa CART, a $x$ obi
 
 \subsection{Trening}
 
-Trening modelu będzie polegał na trenowaniu funkcji $f_i$ reprezentujących kolejne drzewa, wchodzące w skład modelu. Model zwykle budowany jest przyrostowo, tzn. dla każdej iteracji dodajemy kolejne drzewo do modelu. Odpowiada to dodatkowej funkcji $f_i$ funkcji w formule $y$.
+Trening modelu będzie polegał na trenowaniu funkcji $f_i$ reprezentujących kolejne drzewa, wchodzące w skład modelu. Model zwykle budowany jest przyrostowo, tzn. dla każdej iteracji dodajemy kolejne drzewo do modelu. Odpowiada to dodatkowej funkcji $f_i$ funkcji w formule $y$. Jeżeli przez $y^{(i)}$ znaczymy model po $i$-tej iteracji, to dostaniemy uproszczony wzór:
 
-Dla każdego kroku szukamy oczywiście drzewa (funkcji) minimalizującego funkcję straty. 
+\begin{center}
+	$y^{(1)}(x) = f_1(x)$
+\end{center}
+
+\begin{center}
+	$y^{(t)}(x) = y^{(t-1)}(x) + f_t(x)$
+\end{center}
+
+Dla każdego kroku szukamy oczywiście drzewa (funkcji) minimalizującego funkcję straty.
+
+\subsection{Zalety}
+
+XGBoost prezentuje kilka zalet, które są szczególnie widoczne w porównaniu z wyjściową metodą Gradient Boosting:
+
+\begin{enumerate}
+	\item \textbf{Regularyzacja}: Standardowa implementacja Gradient Boosting jest bardziej wrażliwa na \textit{overfitting}.
+	\item \textbf{Przycinanie drzew}: XGBoost zaczyna przycinanie po osiągnięciu głębokości drzewa, określonego parametrem \texttt{max\_depth}
+	\item \textbf{Elastyczność}: Wysokie możliwości parametryzacji i definiowania celu.
+	\item \textbf{Obliczenia równoległe}: Mogą być użyte, ale w nieoczywisty sposób \cite{parallel} (drzewa tworzymy iteracyjnie).
+\end{enumerate}
+
 
 \section{Technologia}
 
@@ -57,14 +99,25 @@ Do wykonania pomiarów, związanych z projektem użyjemy biblioteki \texttt{xgbo
 
 \section{Parametry}
 
-\begin{center}
+Implementacja w użytej bibliotece, obok drzew, pozwala również na użycie liniowych klasyfikatorów. Ich skuteczność w znakomitej większości przypadków jest jednak niższa od drzew, dlatego skupimy się wyłącznie na nich. Do wybranych parametrów, których działanie można zbadać należą:
 
-\end{center}
+\begin{itemize}
+	\item \texttt{max\_depth} - maksymalna głębokość drzewa (jako najdłuższa ścieżka od rdzenia do liścia). Można też zastąpić \texttt{max\_leaf\_nodes} - maksymalną liczbą liści.
+	\item \texttt{eta} - \textit{learning rate}, intuicyjnie: opisuje jak szybko klasyfikator porzuca stare własności przy "nauczeniu się" nowych danych.
+	\item \texttt{alpha}, \texttt{lambda} - odpowiadają za różne typy regularyzacji, odpowiednio \textbf{L1} i \textbf{L2}. 
+\end{itemize}
 
-%\begin{center}
-%	\includegraphics[scale=0.5]{img1}
-%\end{center}
+Wszystkie dostępne parametry są opisane w dokumentacji biblioteki \cite{github}.
 
+\section{Zbiory danych}
 
+% do uzupełnienia
+
+\begin{thebibliography}{1}
+\bibitem{docs} Dokumentacja XGBoost \url{http://xgboost.readthedocs.io/en/latest/model.html}
+\bibitem{tutorial} Tutorial Analytics Vidhya o XGBoost \url{https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/}
+\bibitem{parallel} Parallel Gradient Boosting Decision Trees \url{http://zhanpengfang.github.io/418home.html}
+\bibitem{github} Biblioteka XGBoost \url{https://github.com/dmlc/xgboost}
+\end{thebibliography}
 
 \end{document}
