@@ -39,6 +39,7 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
             break
         else:
             step_mae = min_mae
+            steps = utils.get_possible_steps(params, gradients)
 
     print("Found best solution:")
     print(utils.print_params(best_params))
