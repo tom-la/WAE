@@ -42,8 +42,12 @@ def main():
     #     model.best_score,
     #     model.best_iteration+1))
 
-    main_process(dtrain, dtest, params, 0.001)
+    result = main_process(dtrain, dtest, params, 0.3)
+    print(result)
+    result_random = random_process(dtrain,dtest,0.3, result[2])
 
-
+    print("\t\t\t")
+    print(result)
+    print(result_random)
 if __name__ == "__main__":
     main()

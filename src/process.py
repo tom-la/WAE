@@ -10,6 +10,7 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
     steps = utils.get_possible_steps(params, gradients)
     min_mae = float("Inf")
     step_mae = float("Inf")
+    iterations = 0
     best_params = params.copy()
     last_steps = []
     while True:
@@ -29,7 +30,7 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
             mean_mae = cv_results['test-mae-mean'].min()
             boost_rounds = cv_results['test-mae-mean'].argmin()
             print("\tMAE {} for {} rounds".format(mean_mae, boost_rounds))
-
+            iterations = iterations + 1
             if mean_mae < min_mae:
                 min_mae = mean_mae
                 best_params = step_params.copy()
@@ -48,4 +49,4 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
     print("MAE:")
     print(min_mae)
 
-    return (params, min_mae)
+    return (params, min_mae, iterations)
