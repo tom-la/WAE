@@ -6,12 +6,13 @@ from sklearn.metrics import mean_absolute_error
 import utils
 import global_constraint
 from process import main_process
+from randomprocess import random_process
 
 def main():
-    file = "data/facebook_comments/Training/Features_Variant_1.csv"
-    df = pd.read_csv(file, header=None)
+    file = "data/facebook_comments/Training/hour2011zima.csv"
+    df = pd.read_csv(file, header=1)
     print("Dataset has {} entries and {} features".format(*df.shape))
-    X, y = df.loc[:,:52].values, df.loc[:,53].values
+    X, y =  df.iloc[:,2:15].values, df.iloc[:,16].values
     X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=.1, random_state=42)
     dtrain = xgb.DMatrix(X_train, label=y_train)
     dtest = xgb.DMatrix(X_test, label=y_test)
@@ -20,7 +21,7 @@ def main():
         # Parameters that we are going to tune.
         'max_depth': 6,
         'min_child_weight': 1,
-        'eta': 0.3,
+        'eta': 0.1,
         'subsample': 1,
         'colsample_bytree': 1,
         # Other parameters

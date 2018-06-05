@@ -7,7 +7,7 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
     print(utils.print_params(params))
     print("With epsilon (stop) value: {}".format(epsilon))
     gradients = utils.get_gradient_list(params, global_constraint.STEP)
-    steps = utils.get_possible_steps(params, gradients)
+    steps = utils.get_possible_steps(params, gradients,[])
     min_mae = float("Inf")
     step_mae = float("Inf")
     iterations = 0
@@ -20,7 +20,7 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
             cv_results = xgb.cv(
                 step_params,
                 dtrain,
-                num_boost_round=999,
+                num_boost_round=25,
                 seed=42,
                 nfold=5,
                 metrics={'mae'},
