@@ -45,11 +45,11 @@ def get_gradient_list(params, steps):
     # print(len(bounds))
     return bounds
 
-def get_possible_steps(params, gradient_list):
+def get_possible_steps(params, gradient_list, last_posibilities):
     possibilities = []
     for g in gradient_list:
         new_params = add_params(params, g, CONSTRAINT)
-        if new_params not in possibilities:
+        if new_params not in possibilities and new_params not in last_posibilities:
             possibilities.append(new_params)
     return possibilities
 
@@ -84,11 +84,11 @@ def main():
     #     'objective':'reg:linear'
     # }
 
-    # print(print_params(params))    
+    # print(print_params(params))
     # add_params(params, params2, constraint)
     print(print_params(params))
     gradient = get_gradient_list(params, STEP)
     # print(gradient)
-    print(get_possible_steps(params, gradient))
+    print(get_possible_steps(params, gradient, []))
 
 main()

@@ -11,7 +11,9 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
     min_mae = float("Inf")
     step_mae = float("Inf")
     best_params = params.copy()
+    last_steps = []
     while True:
+        last_steps = steps.copy()
         for step_params in steps:
             print(utils.print_params(step_params))
             cv_results = xgb.cv(
@@ -31,15 +33,15 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
             if mean_mae < min_mae:
                 min_mae = mean_mae
                 best_params = step_params.copy()
-        
+
         if stop_value is not None and min_mae < stop_value:
             break
-        
+
         if (abs(step_mae - min_mae) < epsilon):
             break
         else:
             step_mae = min_mae
-            steps = utils.get_possible_steps(params, gradients)
+            steps = utils.get_possible_steps(params, gradients, last_steps)
 
     print("Found best solution:")
     print(utils.print_params(best_params))

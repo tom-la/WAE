@@ -41,8 +41,8 @@ def main():
     # print("Best MAE: {:.2f} with {} rounds".format(
     #     model.best_score,
     #     model.best_iteration+1))
-    
-    main_process(dtrain, dtest, params, 0.01)
+
+    main_process(dtrain, dtest, params, 0.001)
 
 
 if __name__ == "__main__":
