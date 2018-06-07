@@ -14,7 +14,7 @@ CONSTRAINT = {
 STEP = {
     'max_depth': 1,
     'min_child_weight': 1,
-    'eta': 0.05,
+    'eta': 0.1,
     'subsample': 0.1,
     'colsample_bytree': 0.1,
     'objective':'reg:linear'
