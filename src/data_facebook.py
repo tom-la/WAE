@@ -45,7 +45,7 @@ def main():
 
     result = main_process(dtrain, dtest, params, 0.3)
     print(result)
-    result_random = random_process(dtrain,dtest,0.3, result[2])
+    result_random = random_process(dtrain,dtest,result[2])
 
     print("\t\t\t")
     print(result)

@@ -3,7 +3,7 @@ import utils
 from global_constraint import LOWER_BOUND
 import random
 
-def random_process(dtrain, dtest, epsilon, iterations):
+def random_process(dtrain, dtest, iterations):
     print("Starting hyperparameter tuning with start params:")
     random.seed(a=42)
     min_mae = float("Inf")

@@ -22,7 +22,7 @@ def main_process_class(dtrain, dtest, params, epsilon, y_test ,stop_value=None):
             cv_results = xgb.train(
                 step_params,
                 dtrain,
-                num_boost_round=25,
+                num_boost_round=10,
             )
             print(step_mae)
             preds = cv_results.predict(dtest)
@@ -45,7 +45,7 @@ def main_process_class(dtrain, dtest, params, epsilon, y_test ,stop_value=None):
 
         iterations = iterations + 1
         print(iterations)
-        if (abs(step_mae - maxacc) < 1):
+        if (abs(step_mae - maxacc) < epsilon):
             print(step_mae)
             print(maxacc)
             break

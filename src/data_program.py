@@ -8,6 +8,7 @@ import global_constraint
 from process import main_process
 from process_classification import main_process_class
 from randomprocess import random_process
+from randomprocess_classification import random_process_class
 
 def main():
     file = "data/dota/dota2train.csv"
@@ -45,9 +46,10 @@ def main():
     #     model.best_score,
     #     model.best_iteration+1))
 
-    result = main_process_class(dtrain, dtest, params , 250, y_test )
-    #print(result)
-    #result_random = random_process(dtrain,dtest,0.3, result[2])
+    result = main_process_class(dtrain, dtest, params , 15, y_test )
+    print(result)
+    result_random = random_process_class(dtrain,dtest, result[2], y_test)
+    #result_random = random_process_class(dtrain,dtest, 100, y_test)
 
     print("\t\t\t")
     print(result)
