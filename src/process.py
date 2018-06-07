@@ -20,7 +20,7 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
             cv_results = xgb.cv(
                 step_params,
                 dtrain,
-                num_boost_round=25,
+                num_boost_round=20,
                 seed=42,
                 nfold=5,
                 metrics={'mae'},
@@ -31,6 +31,7 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
             boost_rounds = cv_results['test-mae-mean'].argmin()
             print("\tMAE {} for {} rounds".format(mean_mae, boost_rounds))
             iterations = iterations + 1
+            print(iterations)
             if mean_mae < min_mae:
                 min_mae = mean_mae
                 best_params = step_params.copy()
@@ -42,7 +43,10 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
             break
         else:
             step_mae = min_mae
-            steps = utils.get_possible_steps(params, gradients, last_steps)
+            steps = utils.get_possible_steps(best_params, gradients, last_steps)
+            print(len(steps))
+
+    print(len(steps))
 
     print("Found best solution:")
     print(utils.print_params(best_params))

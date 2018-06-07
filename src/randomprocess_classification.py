@@ -48,6 +48,6 @@ def random_process_class(dtrain, dtest, iterations, y_test):
     print(utils.print_params(best_params))
     print("Random result:")
     print(maxacc)
-    print(100*len(res)/len(preds))
+    print(maxacc/len(y_test))
 
     return (best_params, maxacc)

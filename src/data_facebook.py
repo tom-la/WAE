@@ -9,10 +9,10 @@ from process import main_process
 from randomprocess import random_process
 
 def main():
-    file = "data/facebook_comments/Training/hour2011zima.csv"
+    file = "data/road3d/3d.csv"
     df = pd.read_csv(file, header=1)
     print("Dataset has {} entries and {} features".format(*df.shape))
-    X, y =  df.iloc[:,2:15].values, df.iloc[:,16].values
+    X, y =  df.iloc[:,0:2].values, df.iloc[:,3].values
     X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=.1, random_state=42)
     dtrain = xgb.DMatrix(X_train, label=y_train)
     dtest = xgb.DMatrix(X_test, label=y_test)
@@ -22,7 +22,7 @@ def main():
         'max_depth': 6,
         'min_child_weight': 1,
         'eta': 0.1,
-        'subsample': 1,
+        'subsample': 0.80,
         'colsample_bytree': 1,
         # Other parameters
         'objective':'reg:linear',
@@ -43,7 +43,7 @@ def main():
     #     model.best_score,
     #     model.best_iteration+1))
 
-    result = main_process(dtrain, dtest, params, 0.3)
+    result = main_process(dtrain, dtest, params, 0.000005)
     print(result)
     result_random = random_process(dtrain,dtest,result[2])
 

@@ -45,14 +45,18 @@ def main():
     # print("Best MAE: {:.2f} with {} rounds".format(
     #     model.best_score,
     #     model.best_iteration+1))
-
+    print(len(y_test))
     result = main_process_class(dtrain, dtest, params , 15, y_test )
-    print(result)
+    #print(result)
     result_random = random_process_class(dtrain,dtest, result[2], y_test)
     #result_random = random_process_class(dtrain,dtest, 100, y_test)
 
     print("\t\t\t")
-    print(result)
-    print(result_random)
+    print(result[1])
+    print(result_random[1])
+
+    print(result[1]/len(y_test))
+    print(result_random[1]/len(y_test))
+
 if __name__ == "__main__":
     main()
