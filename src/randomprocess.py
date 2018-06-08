@@ -23,7 +23,7 @@ def random_process(dtrain, dtest, iterations):
         cv_results = xgb.cv(
             step_params,
             dtrain,
-            num_boost_round=20,
+            num_boost_round=10,
             seed=42,
             nfold=5,
             metrics={'mae'},

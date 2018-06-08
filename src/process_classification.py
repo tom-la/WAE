@@ -46,9 +46,12 @@ def main_process_class(dtrain, dtest, params, epsilon, y_test ,stop_value=None):
         iterations = iterations + 1
         print(iterations)
         if (abs(step_mae - maxacc) < epsilon):
-            print(step_mae)
-            print(maxacc)
-            break
+            if(iterations < 500):
+                utils.reduce_steps()
+                step_mae = maxacc
+                steps = utils.get_possible_steps(best_params, gradients, last_steps)
+            else:
+                break
         else:
             step_mae = maxacc
             print("aaaa")

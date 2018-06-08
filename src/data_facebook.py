@@ -9,7 +9,7 @@ from process import main_process
 from randomprocess import random_process
 
 def main():
-    file = "data/road3d/3d.csv"
+    file = "data/road3d/3d7k.csv"
     df = pd.read_csv(file, header=1)
     print("Dataset has {} entries and {} features".format(*df.shape))
     X, y =  df.iloc[:,0:2].values, df.iloc[:,3].values
@@ -21,8 +21,8 @@ def main():
         # Parameters that we are going to tune.
         'max_depth': 6,
         'min_child_weight': 1,
-        'eta': 0.1,
-        'subsample': 0.80,
+        'eta': 0.2,
+        'subsample': 0.6,
         'colsample_bytree': 1,
         # Other parameters
         'objective':'reg:linear',
@@ -43,7 +43,7 @@ def main():
     #     model.best_score,
     #     model.best_iteration+1))
 
-    result = main_process(dtrain, dtest, params, 0.000005)
+    result = main_process(dtrain, dtest, params, 1)
     print(result)
     result_random = random_process(dtrain,dtest,result[2])
 

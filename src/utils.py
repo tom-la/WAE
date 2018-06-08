@@ -52,7 +52,11 @@ def get_possible_steps(params, gradient_list, last_posibilities):
         if new_params not in possibilities and new_params not in last_posibilities:
             possibilities.append(new_params)
     return possibilities
-
+def reduce_steps():
+    STEP["eta"] = STEP["eta"]/2
+    STEP["subsample"] = STEP["subsample"]/2
+    STEP["colsample_bytree"] = STEP["colsample_bytree"]/2
+    return 0
 
 def main():
     params = {

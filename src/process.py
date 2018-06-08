@@ -20,7 +20,7 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
             cv_results = xgb.cv(
                 step_params,
                 dtrain,
-                num_boost_round=20,
+                num_boost_round=10,
                 seed=42,
                 nfold=5,
                 metrics={'mae'},
@@ -40,7 +40,12 @@ def main_process(dtrain, dtest, params, epsilon, stop_value=None):
             break
 
         if (abs(step_mae - min_mae) < epsilon):
-            break
+            if(iterations < 500):
+                utils.reduce_steps()
+                step_mae = min_mae
+                steps = utils.get_possible_steps(best_params, gradients, last_steps)
+            else:
+                break
         else:
             step_mae = min_mae
             steps = utils.get_possible_steps(best_params, gradients, last_steps)
