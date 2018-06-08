@@ -1,0 +1,122 @@
+\documentclass[a4paper,12p]{article}
+\usepackage{standalone}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{indentfirst}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\linespread{1.5}
+
+\renewcommand{\refname}{Źródła}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+\begin{document}
+
+\thispagestyle{empty}
+	\begin{center}
+		{\scshape\Large Wydział Matematyki i Nauk Informacyjnych Politechniki Warszawskiej \par}
+		\vspace{3cm}
+		{\huge\bfseries WAE - raport\par}\
+		\vspace{1cm}
+		{\Large\scshape Optymalizacja parametrów XGBoost\par}
+		\vspace{3cm}
+		{\scshape Tomasz Laskowski\par}
+		{\scshape Michał Omelańczuk\par}
+		\vspace{8cm}
+		{\Large \today}
+		\vspace{1cm}
+	\end{center}
+	
+	\newpage
+	
+	\section{Cel projektu}
+	
+	Celem projektu była optymalizacja parametrów algorytmu XGBoost na kilku wybranych zadaniach klasyfikacji/regresji. Podczas projektu wybrano niezbędne zbiory danych oraz utworzono skrypty w języku Python, pozwalające na wykonanie optymalizacji. Podczas optymalizacji parametrów skupiono się jedynie na kilku, mających największy wpływ na działanie algorytmu \cite{cs}. Biblioteka \texttt{xgboost} dla Pythona, posiada również możliwość użycia innych struktur niż drzewa w budowie modelu, jednak według dokumentacji to dzięki nim można osiągnąć najwyższe skuteczności w nieomalże wszystkich zadaniach. Podstawy teoretyczne algorytmu zostały opisane w specyfikacji wstępnej.
+	
+	Wszystkie skrypty zrealizowano w języku Python, do obsługi ramek danych użyto biblioteki \texttt{Pandas}, natomiast do badania samego algorytmu API algorytmu XGBoost dostępne dla języka Python \cite{docs}.
+	
+	\section{Optymalizowane parametry}	
+	
+	Do optymalizacji wybrano parametry najbardziej istotne dla algorytmu, mające największy wpływ na jego skuteczność według dokumentacji oraz \cite{cs}. Optymalizowano następujące parametry:
+	
+	\begin{enumerate}
+		\item \texttt{max\_depth} - maksymalna głębokość drzew
+		\item \texttt{min\_child\_weight} - minimalna waga potrzebna do podziału liścia w drzewie, odpowiednie dobranie tego parametru w stosunku do \texttt{max\_depth} reguluje \textit{bias-variance tradeoff}.
+		\item \texttt{subsample} - ilość rekordów ze zbioru danych, które bierzemy pod uwagę podczas treningu (jeżeli wartość jest $< 100\%$ wybierane są losowo).
+		\item \texttt{colsample\_bytree} - ilość cech (kolumn w ramce danych), które bierzemy pod uwagę (analogicznie do \texttt{subsample}).
+		\item \texttt{eta} - wartość kroku, im mniejsza tym algorytm uczy się wolniej, ale zwykle lepiej (choć może również powodować overfitting).
+	\end{enumerate}
+
+	
+	Ustawiane są również globalnie zmienne:
+	
+	\begin{enumerate}
+		\item \texttt{objective} - rodzaj funkcji celu (różne dla zadań regresji/klasyfikacji)
+		\item \texttt{num\_boost\_round} - maksymalna ilość iteracji pojedynczej nauki, zwykle ustawiana z nadwyżką.
+		\item \texttt{seed} - ziarno używane w (pseudo)losowaniach  - użycie tego samego ziarna dla wszystkich eksperymentów gwarantuje otrzymanie spójnych wyników, na które nie wpływa losowość
+		\item \texttt{metrics} - metryka, używana do oceny modelu - dla regresji zwykle używano średniego błędu absolutnego (MAE)
+	\end{enumerate}
+	
+			
+	\section{Wyniki}
+	
+	Optymalizację parametrów przeprowadzono na kilku zbiorach danych, poniżej przedstawiono przykładowe wyniki.	
+	
+	\subsection{Facebook - posty}
+	
+	Pierwszy zbiór danych reprezentował posty zamieszczone na portalu Facebook \cite{facebook}. Każdy z wektorów, odpowiadających postom, zawierał 53 cechy takie jak ilość polubień, czas dnia publikacji czy kategorię. Zadaniem dla tego zbioru było oszacowanie liczby komentarzy, jakie się pod nim pojawiły. Był to oczywiście problem regresji, dla którego minimalizowaliśmy błąd MAE.
+	
+	Losowe strojenie parametrów zapewniało błąd na poziomie $4.075$:
+	
+	\begin{verbatim}
+		Found best solution:
+		max_depth: 6, min_child_weight: 2, eta: 0.25,
+		subsample: 1, colsample_bytree: 1
+		MAE:	
+		4.075314199999999
+	\end{verbatim}
+	
+	Dla trzech różnych punktów wyjściowych dla optymalizacji osiągnięto następujące wyniki:
+	
+	\begin{verbatim}
+		max_depth: 6, min_child_weight: 2, eta: 0.25,
+		subsample: 1, colsample_bytree: 1
+		MAE:	
+		4.075314199999999
+	\end{verbatim}
+	
+	\begin{verbatim}
+		Found best solution:
+		max_depth: 14, min_child_weight: 6, eta: 0.012,
+subsample: 0.9, colsample_bytree: 1
+        MAE 3.8534371999999997 for 188 rounds
+	\end{verbatim}
+	
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 14, min_child_weight: 6, eta: 0.008,
+subsample: 0.9, colsample_bytree: 1
+        MAE 3.8481496 for 274 rounds
+	\end{verbatim}
+	
+	Zaczynanie od niższej wartości parametru \texttt{eta} znacznie wydłużało obliczenia, jednak okazało się również bardziej skuteczne.
+	
+	
+
+\begin{thebibliography}{1}
+\bibitem{docs} Dokumentacja XGBoost \\ \url{http://xgboost.readthedocs.io/en/latest/model.html}
+\bibitem{cs} Hyperparameter tuning in XGBoost \\ \url{https://cambridgespark.com/content/tutorials/hyperparameter-tuning-in-xgboost/index.html}
+\bibitem{parallel} Parallel Gradient Boosting Decision Trees \\ \url{http://zhanpengfang.github.io/418home.html}
+\bibitem{facebook} Facebook Comment Volume Dataset \\ \url{https://archive.ics.uci.edu/ml/datasets/Facebook+Comment+Volume+Dataset}
+\end{thebibliography}	
+	
+\end{document}
