@@ -13,7 +13,7 @@ def random_process(dtrain, dtest, iterations):
 
                 'max_depth': 0 + random.randint(0,10) ,
                 'min_child_weight': 0 + random.randint(0,10) ,
-                'eta': 0 + random.randint(0,10),
+                'eta': random.uniform(LOWER_BOUND,1),
                 'subsample': random.uniform(LOWER_BOUND,1),
                 'colsample_bytree': random.uniform(LOWER_BOUND,1),
                 'objective': 'reg:linear'
