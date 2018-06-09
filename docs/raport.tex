@@ -110,13 +110,208 @@ subsample: 0.9, colsample_bytree: 1
 	
 	Zaczynanie od niższej wartości parametru \texttt{eta} znacznie wydłużało obliczenia, jednak okazało się również bardziej skuteczne.
 	
+	\subsection{Droga3d - Jutlandia}
+	Zadanie regresji z czterema atrybutami: id, długość geograficzna, szerokość geograficzna, wysokość nad poziomem morza. Minimalizowany był błąd MAE. Zadaniem było znalezienie wysokości nad poziomem morza. Ze względu na dużą liczbę danych i długi czas obliczeń przetestowano dla pierwszych 6941 rekordów.
 	
+	
+	Dla algorytmu losowego i liczby iteracji 562 otrzymano następujące wyniki: 
+	
+	\begin{verbatim} 
+		Found best solution:
+		max_depth: 10, min_child_weight: 10, eta: 0.9799422628396607 
+		subsample: 0.9672697800302851, colsample_bytree: 0.8045878394329179
+		Mae: 
+		5.26558
+	\end{verbatim}
+	
+	Parametry początkowe algorytmu optymalizacyjnego:
+	\begin{verbatim}
+		max_depth: 5, min_child_weight: 1, eta: 0.8,
+		subsample: 1, colsample_bytree: 1,
+	\end{verbatim}
+	\begin{verbatim}
+		max_depth: 3, min_child_weight: 1, eta: 0.7,
+		subsample: 0.9, colsample_bytree: 1,
+	\end{verbatim}
+	
+	Otrzymano następujące wyniki algorytmu optymalizacyjnego
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 6, min_child_weight: 1, eta: 0.2,
+subsample: 0.6, colsample_bytree: 1
+        MAE 3.3740477999999996 
+	Liczba iteracji: 562
+	\end{verbatim}
+	
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 3, min_child_weight: 1, eta: 0.7,
+subsample: 0.9, colsample_bytree: 1
+        MAE 3.369652
+	Liczba iteracji: 530
+	\end{verbatim}
+	
+	Algorytm optymalizacji otrzymał wyraźnie lepsze wyniki od algorytmu losowego.
+	
+	\subsection{Bike - sharing}
+	Zadanie regresji z 16 atrybutami. Minimalizowany był błąd MAE. Zadaniem było znalezienie liczby wypożyczanych rowerów. Ze względu na dużą liczbę danych i długi czas obliczeń przetestowano dla pierwszych rekordów z zimy 2011.
 
+	Dla algorytmu optymalizacyjnego dla parametrów początkowych
+	\begin{verbatim}
+		max_depth: 5, min_child_weight: 1, eta: 0.8,
+		subsample: 0.8, colsample_bytree: 0.7,
+	\end{verbatim}
+	\begin{verbatim}
+		max_depth: 3, min_child_weight: 2, eta: 0.6,
+		subsample: 0.2, colsample_bytree: 0.2,
+	\end{verbatim}
+	
+	
+	Wynik dla algorytmu losowego
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 9, min_child_weight: 3, eta: 0.27359660636023125, 
+subsample: 0.9635935740862149, colsample_bytree: 0.9704916794204507
+        MAE 21.3881596
+	\end{verbatim}
+	
+	Wyniki dla algorytmu optymlizacji
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 7, min_child_weight: 0, eta: 0.38,
+subsample: 0.8, colsample_bytree: 0.84
+        MAE 22.441255399999996
+	Liczba iteracji: 678
+	\end{verbatim}
+	
+	\begin{verbatim}
+	Found best solution: 
+	max_depth:6 , min_child_weight:2 , eta: 0.6 ,
+subsample: 0.32 , colsample_bytree: 0.2 
+        MAE 47.56299680000001
+	Liczba iteracji: 1146
+	\end{verbatim}
+
+	Algorytm optymalizacji dla pierwszego zbioru parametrów otrzymał porównywalne wyniki do algorytmu losowego. Przy drugich parametrach otrzymał wyraźnie gorsze.
+	
+	\subsection{Dota2}
+	Zadanie klasyfikacji na podstawie wyboru bohaterów przez graczy. Jest 116 atrybutów, ale większość to 0, a w pięciu jest -1 lub 1 oznaczające która drużuna wybrała bohatera. Przetestowano i przetrenowano dla zbioru z 1066 i 10274 rekordów.
+
+	Dla pierwszego zbioru:
+	Parametry początkowe:
+	\begin{verbatim}
+		max_depth: 6, min_child_weight: 1, eta: 0.2,
+		subsample: 0.6, colsample_bytree: 0.8,	
+	\end{verbatim}
+	Zastosowano num_boost_round=5 i num_boost_round=20 dla zbioru testowego z 109 rekordami.
+	
+	Otrzymano wyniki dla algorytmu optymalizacyjnego:
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 5, min_child_weight: 1, eta: 0.22,
+subsample: 0.66, colsample_bytree: 0.84
+        Poprawne wyniki dla 69 rekordów.
+	Liczba iteracji: 842
+	\end{verbatim}
+	
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 6, min_child_weight: 0, eta: 0.26,
+subsample: 0.52, colsample_bytree: 0.88
+        Poprawne wyniki dla 71 rekordów.
+	Liczba iteracji: 877
+	\end{verbatim}
+	
+	Otrzymano wyniki dla algorytmu losowego:
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 1, min_child_weight: 10, eta: 0.4310517513551951,
+subsample: 0.42357919944129774, colsample_bytree: 0.4670252010120069
+        Poprawne wyniki dla 71 rekordów.
+	\end{verbatim}
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 1, min_child_weight: 7, eta: 0.8894261720443264,
+subsample: 0.5004778740153298, colsample_bytree: 0.8674978872004753
+        Poprawne wyniki dla 72 rekordów.
+	\end{verbatim}
+	
+	Dla następujących parametrów początkowych:
+	\begin{verbatim}
+		max_depth: 8, min_child_weight: 1, eta: 0.4,
+		subsample: 0.4, colsample_bytree: 0.9,	
+		num_boost_round=20,
+	\end{verbatim}
+	
+	Otrzymano wyniki dla algorytmu losowego:
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 5, min_child_weight: 4, eta: 0.4543496238077168,
+subsample: 0.6413127682025279, colsample_bytree: 0.5243190105169857
+        Poprawne wyniki dla 68 rekordów.
+	\end{verbatim}
+	
+	Otrzymane wyniki dla algorytmu optymalizacji:
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 8, min_child_weight: 1, eta: 0.42,
+subsample: 0.36, colsample_bytree: 0.94
+        Poprawne wyniki dla 70 rekordów.
+	Liczba iteracji: 560
+	\end{verbatim}
+	
+	Dla większego zbioru zastosowano num_boost_round=2 i num_boost_round=5, liczba rekordów w zbiorze testującym 9265  
+	Parametry początkowe:
+	\begin{verbatim}
+		max_depth: 5, min_child_weight: 1, eta: 0.8,
+		subsample: 0.8, colsample_bytree: 0.7,	
+	\end{verbatim}
+	
+	Wyniki dla num_boost_round=5
+	Otrzymano wyniki dla algorytmu losowego:
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 8, min_child_weight: 10, eta: 0.8256036834829479,
+subsample: 0.7618598581114872, colsample_bytree: 0.6803422395774781
+        Poprawne wyniki dla 5280 rekordów.
+	
+	\end{verbatim}Otrzymano wyniki dla algorytmu optymalizacji:
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 7, min_child_weight: 0, eta: 0.82,
+subsample: 0.84, colsample_bytree: 0.7
+        Poprawne wyniki dla 5266 rekordów.
+	Liczba iteracji 560
+	\end{verbatim}
+	
+	Wyniki dla num_boost_round=2
+	Otrzymano wyniki dla algorytmu losowego:
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 8, min_child_weight: 7, eta: 0.9103567171053869,
+subsample: 0.6882042272514581, colsample_bytree: 0.48066446210972424
+        Poprawne wyniki dla 5165 rekordów.
+	
+	\end{verbatim}Otrzymano wyniki dla algorytmu optymalizacji:
+	\begin{verbatim}
+	Found best solution:
+	max_depth: 9, min_child_weight: 1, eta: 0.74,
+subsample: 0.82, colsample_bytree: 0.58
+        Poprawne wyniki dla 5163 rekordów.
+	Liczba iteracji: 900
+	\end{verbatim}
+	
+	Zostały otrzymane dobre wyniki, wyraźnie większe od spodziewanej połowy poprawnych wyników. Algorytmy optymalizacji oraz losowy otrzymały podobne wyniki.  
+	
 \begin{thebibliography}{1}
 \bibitem{docs} Dokumentacja XGBoost \\ \url{http://xgboost.readthedocs.io/en/latest/model.html}
 \bibitem{cs} Hyperparameter tuning in XGBoost \\ \url{https://cambridgespark.com/content/tutorials/hyperparameter-tuning-in-xgboost/index.html}
 \bibitem{parallel} Parallel Gradient Boosting Decision Trees \\ \url{http://zhanpengfang.github.io/418home.html}
 \bibitem{facebook} Facebook Comment Volume Dataset \\ \url{https://archive.ics.uci.edu/ml/datasets/Facebook+Comment+Volume+Dataset}
+\bibitem{drogi3d} 3D Road Network North Jutland Denmark \\ \url{https://archive.ics.uci.edu/ml/datasets/3D+Road+Network+%28North+Jutland%2C+Denmark%29}
+\bibitem{bike} Bike sharing \\ \url{https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset}
+\bibitem{dota2} Dota2 Games Results \\ \url{https://archive.ics.uci.edu/ml/datasets/Dota2+Games+Results}
+
 \end{thebibliography}	
 	
 \end{document}
