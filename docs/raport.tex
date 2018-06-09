@@ -66,7 +66,10 @@
 		\item \texttt{metrics} - metryka, używana do oceny modelu - dla regresji zwykle używano średniego błędu absolutnego (MAE)
 	\end{enumerate}
 	
-			
+	\section{algorytm}
+	Algorytm optymalizacji przeszukuje sąsiadów odległych o zadaną deltę i przechodzi do tego z najlepszym wynikiem. Kontynuuje ten krok jeżeli różnica pomiędzy kolejnymi krokami jest większa od zadanego epsilona. Jeżeli liczba policzonych drzew jest mniejsza od zadanej stałej zmniejsza deltę i sprawdza bliższych sąsiadów. 
+	Algorytm losowy za każdym razem losuje parametry dla następnego drzewa. Liczba wytrenowanych drzew w obu algorytmach jest taka sama. 
+	
 	\section{Wyniki}
 	
 	Optymalizację parametrów przeprowadzono na kilku zbiorach danych, poniżej przedstawiono przykładowe wyniki.	
@@ -302,6 +305,9 @@ subsample: 0.82, colsample_bytree: 0.58
 	\end{verbatim}
 	
 	Zostały otrzymane dobre wyniki, wyraźnie większe od spodziewanej połowy poprawnych wyników. Algorytmy optymalizacji oraz losowy otrzymały podobne wyniki.  
+	
+	\section{wnioski}
+	Zastosowany algorytm optymalizacji nie zawsze znajdował dobry wynik. Jeden krok algorytmu wymagał sprawdzenia nawet 242 sąsiadów, co powodowało że niewiele kroków robił algorytm w zadowalającym czasie. Algorytm losowy dawał podobne wyniki jak optymalizacyjny, przy zastosowaniu słabych parametrów początkowych w algorytmie optymalizacyjnym, algorytm losowy dawał lepsze wyniki.
 	
 \begin{thebibliography}{1}
 \bibitem{docs} Dokumentacja XGBoost \\ \url{http://xgboost.readthedocs.io/en/latest/model.html}
