@@ -21,7 +21,7 @@ def random_process_class(dtrain, dtest, iterations, y_test):
         cv_results = xgb.train(
             step_params,
             dtrain,
-            num_boost_round=10,
+            num_boost_round=2,
         )
         preds = cv_results.predict(dtest)
         preds = [1 if z > 0.5 else 0 for z in preds]

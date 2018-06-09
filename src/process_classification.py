@@ -22,39 +22,42 @@ def main_process_class(dtrain, dtest, params, epsilon, y_test ,stop_value=None):
             cv_results = xgb.train(
                 step_params,
                 dtrain,
-                num_boost_round=10,
+                num_boost_round=2,
             )
             print(step_mae)
             preds = cv_results.predict(dtest)
             preds = [1 if z > 0.5 else 0 for z in preds]
 
+            iterations = iterations + 1
+            print(iterations)
             #print(preds)
             err = 0
 
             res = [i for i, j in zip(preds, y_test) if i == j]
             #accuracy = accuracy_score(dtest.label, predictions)
             #print("Accuracy: %.2f%%" % (accuracy * 100.0))
+            print(maxacc)
             print(len(res))
 
-            print(100*len(res)/len(preds))
+            #print(100*len(res)/len(preds))
 
             if len(res) > maxacc:
                 maxacc = len(res)
                 best_params = step_params.copy()
 
 
-        iterations = iterations + 1
-        print(iterations)
+
+
         if (abs(step_mae - maxacc) < epsilon):
             if(iterations < 500):
                 utils.reduce_steps()
                 step_mae = maxacc
+
                 steps = utils.get_possible_steps(best_params, gradients, last_steps)
             else:
                 break
         else:
             step_mae = maxacc
-            print("aaaa")
             steps = utils.get_possible_steps(best_params, gradients, last_steps)
 
     print("Found best solution:")
@@ -62,4 +65,4 @@ def main_process_class(dtrain, dtest, params, epsilon, y_test ,stop_value=None):
     print("MAE:")
     print(maxacc)
 
-    return (params, maxacc, iterations)
+    return (best_params, maxacc, iterations)
